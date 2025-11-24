@@ -12,9 +12,8 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class AWPlayerCharacter;
 
-
-#define ECC_Cursor ECC_GameTraceChannel1
 
 UCLASS()
 class WGAS_API AWPlayerController : public APlayerController
@@ -35,6 +34,9 @@ protected:
 	bool bIsAiming;
 
 private:
+
+	UPROPERTY()
+	TObjectPtr<AWPlayerCharacter> ControlledCharacter;
 	
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputMappingContext> PlayerContext;
@@ -45,6 +47,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> AimAction;
 
+	virtual void OnPossess(APawn* InPawn) override;
 	void Move(const FInputActionValue& Value);
 
 	bool GetLookLocation(FVector& OutLocation) const;

@@ -4,6 +4,7 @@
 #include "Controller/WPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Character/WPlayerCharacter.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -52,18 +53,18 @@ void AWPlayerController::SetupInputComponent()
 
 }
 
+void AWPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	ControlledCharacter = Cast<AWPlayerCharacter>(InPawn);
+}
+
 void AWPlayerController::Move(const FInputActionValue& Value)
 {
 	const FVector2d InputAxisVector  = Value.Get<FVector2D>();
-	const FRotator Rotation = GetControlRotation();
-	const FRotator YawRotation(0.f,Rotation.Yaw,0.f);
-
-	const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if (ControlledCharacter)
 	{
-		ControlledPawn->AddMovementInput(ForwardDir,InputAxisVector.Y);
-		ControlledPawn->AddMovementInput(RightDir,InputAxisVector.X);
+		ControlledCharacter->Move(InputAxisVector);
 	}
 }
 bool AWPlayerController::GetLookLocation(FVector& OutLocation) const
@@ -85,19 +86,8 @@ void AWPlayerController::LookMouseCursor()
 	FVector LookLocation;
 	if (GetLookLocation(LookLocation))
 	{
-		ACharacter* ControlledPawn = GetPawn<ACharacter>();
-		check(ControlledPawn);
-		ControlledPawn->GetCharacterMovement()->bOrientRotationToMovement = false;
-
-		FVector StartLocation = FVector(ControlledPawn->GetActorLocation().X,ControlledPawn->GetActorLocation().Y,LookLocation.Z);
-		
-		float DeltaSecond = UGameplayStatics::GetWorldDeltaSeconds(this);
-
-		FRotator TargetRot = FMath::RInterpTo(ControlledPawn->GetActorRotation(),
-			UKismetMathLibrary::FindLookAtRotation(StartLocation,LookLocation),
-			DeltaSecond,7.5);
-
-		ControlledPawn->SetActorRotation(TargetRot);
+		check(ControlledCharacter);
+		ControlledCharacter->LookMouseCursor(LookLocation);
 	}
 	
 
@@ -105,10 +95,8 @@ void AWPlayerController::LookMouseCursor()
 
 void AWPlayerController::StopLookMouseCursor()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "StopLookMouseCursor");
 	bIsAiming = false;
-	ACharacter* ControlledCharacter = GetPawn<ACharacter>();
 	check(ControlledCharacter);
-	ControlledCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
+	ControlledCharacter->StopLookMouseCursor();
 }
 
