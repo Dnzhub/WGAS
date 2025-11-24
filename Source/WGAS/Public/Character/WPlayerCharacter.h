@@ -6,7 +6,7 @@
 #include "WCharacterBase.h"
 #include "WPlayerCharacter.generated.h"
 
-#define ECC_Cursor ECC_GameTraceChannel1
+
 
 UCLASS()
 class WGAS_API AWPlayerCharacter : public AWCharacterBase

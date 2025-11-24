@@ -13,7 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class AWPlayerCharacter;
-
+class IInteractable;
 
 UCLASS()
 class WGAS_API AWPlayerController : public APlayerController
@@ -23,10 +23,12 @@ class WGAS_API AWPlayerController : public APlayerController
 public:
 	AWPlayerController();
 
+	virtual void Tick(float DeltaSeconds) override;
+	
 	UFUNCTION(BlueprintCallable, Category = Input)
 	bool IsAiming();
 
-
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -50,11 +52,13 @@ private:
 	virtual void OnPossess(APawn* InPawn) override;
 	void Move(const FInputActionValue& Value);
 
-	bool GetLookLocation(FVector& OutLocation) const;
 
 	void LookMouseCursor();
 	void StopLookMouseCursor();
+	void CursorTrace();
 
-	
+	TScriptInterface<IInteractable> LastActor;
+	TScriptInterface<IInteractable> ThisActor;
+
 };
 

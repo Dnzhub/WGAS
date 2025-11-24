@@ -5,10 +5,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Character/WPlayerCharacter.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "Interaction/Interactable.h"
+#include "WGAS/WGAS.h"
 
 AWPlayerController::AWPlayerController()
 {
@@ -16,10 +14,7 @@ AWPlayerController::AWPlayerController()
 	bReplicates = true;
 }
 
-bool AWPlayerController::IsAiming()
-{
-	return bIsAiming;
-}
+
 
 void AWPlayerController::BeginPlay()
 {
@@ -41,6 +36,11 @@ void AWPlayerController::BeginPlay()
 	SetInputMode(InputModeData);
 
 }
+void AWPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	CursorTrace();
+}
 
 void AWPlayerController::SetupInputComponent()
 {
@@ -58,6 +58,10 @@ void AWPlayerController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	ControlledCharacter = Cast<AWPlayerCharacter>(InPawn);
 }
+bool AWPlayerController::IsAiming()
+{
+	return bIsAiming;
+}
 
 void AWPlayerController::Move(const FInputActionValue& Value)
 {
@@ -67,30 +71,22 @@ void AWPlayerController::Move(const FInputActionValue& Value)
 		ControlledCharacter->Move(InputAxisVector);
 	}
 }
-bool AWPlayerController::GetLookLocation(FVector& OutLocation) const
+
+
+void AWPlayerController::LookMouseCursor() 
 {
+	bIsAiming = true;
 	FHitResult HitResult;
 	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Cursor);
 
 	bool bHit = GetHitResultUnderCursorByChannel(TraceType,true,HitResult);
 	if (bHit)
 	{
-		OutLocation = HitResult.Location;
-	}
-	return bHit;
-}
-
-void AWPlayerController::LookMouseCursor() 
-{
-	bIsAiming = true;
-	FVector LookLocation;
-	if (GetLookLocation(LookLocation))
-	{
 		check(ControlledCharacter);
-		ControlledCharacter->LookMouseCursor(LookLocation);
+		ControlledCharacter->LookMouseCursor( HitResult.Location);
 	}
-	
 
+	
 }
 
 void AWPlayerController::StopLookMouseCursor()
@@ -98,5 +94,38 @@ void AWPlayerController::StopLookMouseCursor()
 	bIsAiming = false;
 	check(ControlledCharacter);
 	ControlledCharacter->StopLookMouseCursor();
+}
+
+void AWPlayerController::CursorTrace()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECC_Visibility,false,HitResult);
+	if (!HitResult.bBlockingHit) return;
+
+	LastActor = ThisActor;
+	ThisActor = HitResult.GetActor();
+
+	if (!LastActor)
+	{
+		if (ThisActor)
+		{
+			ThisActor->HighlightActor();
+		}
+	}
+	else //LastActor is valid
+	{
+		if (!ThisActor)
+		{
+			LastActor->UnHighlightActor();
+		}
+		else // Both actors are valid
+		{
+			if (LastActor != ThisActor)
+			{
+				LastActor->UnHighlightActor();
+				ThisActor->HighlightActor();
+			}
+		}
+	}
 }
 

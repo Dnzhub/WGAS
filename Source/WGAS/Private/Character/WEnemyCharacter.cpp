@@ -3,30 +3,27 @@
 
 #include "Character/WEnemyCharacter.h"
 
+#include "Components/CapsuleComponent.h"
+#include "WGAS/WGAS.h"
 
-// Sets default values
+
 AWEnemyCharacter::AWEnemyCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 }
 
-// Called when the game starts or when spawned
-void AWEnemyCharacter::BeginPlay()
+void AWEnemyCharacter::HighlightActor()
 {
-	Super::BeginPlay();
-	
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetRenderCustomDepth(true);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
-// Called every frame
-void AWEnemyCharacter::Tick(float DeltaTime)
+void AWEnemyCharacter::UnHighlightActor()
 {
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AWEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	GetMesh()->SetRenderCustomDepth(false);
+	Weapon->SetRenderCustomDepth(false);
 }
 
