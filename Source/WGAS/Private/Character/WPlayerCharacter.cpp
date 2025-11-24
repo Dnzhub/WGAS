@@ -3,30 +3,17 @@
 
 #include "Character/WPlayerCharacter.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
 
-// Sets default values
+
 AWPlayerCharacter::AWPlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0, 400.f, 0);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
-// Called when the game starts or when spawned
-void AWPlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 }
-
-// Called every frame
-void AWPlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AWPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
