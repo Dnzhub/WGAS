@@ -3,9 +3,11 @@
 
 #include "Character/WPlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "State/WPlayerState.h"
 
 
 AWPlayerCharacter::AWPlayerCharacter()
@@ -53,5 +55,32 @@ void AWPlayerCharacter::LookMouseCursor(const FVector& TargetLocation)
 void AWPlayerCharacter::StopLookMouseCursor()
 {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+}
+
+
+
+void AWPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	//Set ability system component owner and avatar for the server
+	InitAbilityInfo();
+}
+
+void AWPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	//Set ability system component owner and avatar for the client
+	InitAbilityInfo();
+}
+void AWPlayerCharacter::InitAbilityInfo()
+{
+	AWPlayerState* PS = GetPlayerState<AWPlayerState>();
+	check(PS);
+	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+	
+	AbilitySystemComponent = PS->GetAbilitySystemComponent();
+	AttributeSet = PS->GetAttributeSet();
+
+	
 }
 

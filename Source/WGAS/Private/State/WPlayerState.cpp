@@ -8,11 +8,9 @@
 
 AWPlayerState::AWPlayerState()
 {
-	
-
 	AbilitySystemComponent = CreateDefaultSubobject<UWAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
-
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	AttributeSet = CreateDefaultSubobject<UWAttributeSet>("AttributeSet");
 
 	//How often server update the clients

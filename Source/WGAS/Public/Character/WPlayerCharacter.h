@@ -19,5 +19,9 @@ public:
 	void Move(const FVector2d& MovementVector);
 	void LookMouseCursor(const FVector& TargetLocation);
 	void StopLookMouseCursor();
+
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 protected:
+	void InitAbilityInfo();
 };

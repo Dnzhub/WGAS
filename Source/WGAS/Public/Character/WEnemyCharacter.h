@@ -16,7 +16,10 @@ public:
 	// Sets default values for this character's properties
 	AWEnemyCharacter();
 
-public:
+	/** IInteractable **/
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	/** End IInteractable **/
+protected:
+	virtual void BeginPlay() override;
 };
