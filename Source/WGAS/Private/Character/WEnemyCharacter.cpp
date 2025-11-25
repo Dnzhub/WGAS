@@ -3,6 +3,8 @@
 
 #include "Character/WEnemyCharacter.h"
 
+#include "AbilitySystem/WAbilitySystemComponent.h"
+#include "AbilitySystem/WAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "WGAS/WGAS.h"
 
@@ -11,6 +13,11 @@ AWEnemyCharacter::AWEnemyCharacter()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+
+	AbilitySystemComponent = CreateDefaultSubobject<UWAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+
+	AttributeSet = CreateDefaultSubobject<UWAttributeSet>("AttributeSet");
 }
 
 void AWEnemyCharacter::HighlightActor()
