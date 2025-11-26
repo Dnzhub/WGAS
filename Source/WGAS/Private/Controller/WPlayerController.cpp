@@ -23,9 +23,11 @@ void AWPlayerController::BeginPlay()
 	check(PlayerContext);
 
 	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(SubSystem);
+	if(SubSystem)
+	{
+		SubSystem->AddMappingContext(PlayerContext,0);
+	}
 
-	SubSystem->AddMappingContext(PlayerContext,0);
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -82,8 +84,11 @@ void AWPlayerController::LookMouseCursor()
 	bool bHit = GetHitResultUnderCursorByChannel(TraceType,true,HitResult);
 	if (bHit)
 	{
-		check(ControlledCharacter);
-		ControlledCharacter->LookMouseCursor( HitResult.Location);
+		if(ControlledCharacter)
+		{
+			ControlledCharacter->LookMouseCursor( HitResult.Location);
+
+		}
 	}
 
 	
@@ -92,8 +97,10 @@ void AWPlayerController::LookMouseCursor()
 void AWPlayerController::StopLookMouseCursor()
 {
 	bIsAiming = false;
-	check(ControlledCharacter);
-	ControlledCharacter->StopLookMouseCursor();
+	if(ControlledCharacter)
+	{
+		ControlledCharacter->StopLookMouseCursor();
+	}
 }
 
 void AWPlayerController::CursorTrace()

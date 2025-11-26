@@ -4,10 +4,12 @@
 #include "Character/WPlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Controller/WPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "State/WPlayerState.h"
+#include "UI/HUD/WHUD.h"
 
 
 AWPlayerCharacter::AWPlayerCharacter()
@@ -81,6 +83,19 @@ void AWPlayerCharacter::InitAbilityInfo()
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
 	AttributeSet = PS->GetAttributeSet();
 
+	/**
+	//Only client itself has valid player controller. 
+	//EG. if 3 players are playing, Your machine only has valid player controller. Other 2  character copies has no valid player controller
+	//So we need to check controller if it valid
+	 * **/
+	if (AWPlayerController* PlayerController = Cast<AWPlayerController>(GetController()))
+	{
+		if (AWHUD* MyHUD = Cast<AWHUD>(PlayerController->GetHUD()))
+		{
+			MyHUD->InitOverlay(PlayerController,PS,AbilitySystemComponent,AttributeSet);
+		}
+	}
+	
 	
 }
 
