@@ -22,26 +22,29 @@ void AWPlayerController::BeginPlay()
 
 	check(PlayerContext);
 
-	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if(SubSystem)
+	if (IsLocalController())
 	{
-		SubSystem->AddMappingContext(PlayerContext,0);
+	
+		if(UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+		{
+			SubSystem->AddMappingContext(PlayerContext,0);
+		}
+		
+		bShowMouseCursor = true;
+		DefaultMouseCursor = EMouseCursor::Default;
+
+		FInputModeGameAndUI InputModeData;
+		InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputModeData.SetHideCursorDuringCapture(false);
+		SetInputMode(InputModeData);
 	}
-
-
-	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Default;
-
-	FInputModeGameAndUI InputModeData;
-	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	InputModeData.SetHideCursorDuringCapture(false);
-	SetInputMode(InputModeData);
 
 }
 void AWPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	CursorTrace();
+	
 }
 
 void AWPlayerController::SetupInputComponent()
@@ -59,6 +62,12 @@ void AWPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	ControlledCharacter = Cast<AWPlayerCharacter>(InPawn);
+}
+void AWPlayerController::OnRep_Pawn()
+{
+	Super::OnRep_Pawn();
+	ControlledCharacter = Cast<AWPlayerCharacter>(GetPawn());
+
 }
 bool AWPlayerController::IsAiming()
 {
@@ -87,7 +96,6 @@ void AWPlayerController::LookMouseCursor()
 		if(ControlledCharacter)
 		{
 			ControlledCharacter->LookMouseCursor( HitResult.Location);
-
 		}
 	}
 

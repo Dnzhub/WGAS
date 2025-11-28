@@ -43,6 +43,8 @@ void AWEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		const UWAttributeSet* AttributeSet = Cast<UWAttributeSet>(AbilitySystemInterface->GetAbilitySystemComponent()->GetAttributeSet(UWAttributeSet::StaticClass()));
 		UWAttributeSet* MutableAttributeSet = const_cast<UWAttributeSet*>(AttributeSet);
 		MutableAttributeSet->SetHealth(AttributeSet->GetHealth() + 25.f);
+		MutableAttributeSet->SetMana(AttributeSet->GetMana() - 25.f);
+
 		Destroy();
 	}
 }

@@ -50,6 +50,7 @@ private:
 	TObjectPtr<UInputAction> AimAction;
 
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnRep_Pawn() override;
 	void Move(const FInputActionValue& Value);
 
 
@@ -61,4 +62,6 @@ private:
 	TScriptInterface<IInteractable> ThisActor;
 
 };
+
+
 
