@@ -6,7 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "WEffectActor.generated.h"
 
-class USphereComponent;
+
+class UGameplayEffect;
 
 UCLASS()
 class WGAS_API AWEffectActor : public AActor
@@ -16,20 +17,16 @@ class WGAS_API AWEffectActor : public AActor
 public:
 	AWEffectActor();
 
-	UFUNCTION()
-	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyState, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void EndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 private:
+	
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> SphereComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 };

@@ -9,8 +9,8 @@ UWAttributeSet::UWAttributeSet()
 {
 	InitHealth(50.f);
 	InitMaxHealth(100.f);
-	InitMana(250.f);
-	InitMaxMana(250.f);
+	InitMana(25.f);
+	InitMaxMana(100.f);
 }
 
 //Register for Replication boilerplate
