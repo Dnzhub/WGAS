@@ -11,6 +11,8 @@ UWAttributeSet::UWAttributeSet()
 	InitMaxHealth(100.f);
 	InitMana(25.f);
 	InitMaxMana(100.f);
+	InitStamina(100.f);
+	InitMaxStamina(100.f);
 }
 
 //Register for Replication boilerplate
@@ -27,6 +29,9 @@ void UWAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxHealth,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Mana,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Stamina,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxStamina,COND_None,REPNOTIFY_Always);
+
 	
 }
 
@@ -55,3 +60,16 @@ void UWAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) con
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxMana, OldMaxMana);
 
 }
+
+void UWAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxMana, OldStamina);
+
+}
+
+void UWAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxMana, OldMaxStamina);
+
+}
+

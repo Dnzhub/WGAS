@@ -55,6 +55,7 @@ void AWPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AWPlayerController::Move);
 	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&AWPlayerController::LookMouseCursor);
 	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Completed,this,&AWPlayerController::StopLookMouseCursor);
+	EnhancedInputComponent->BindAction(DashAction,ETriggerEvent::Started,this,&AWPlayerController::Dash);
 
 }
 
@@ -141,6 +142,14 @@ void AWPlayerController::CursorTrace()
 				ThisActor->HighlightActor();
 			}
 		}
+	}
+}
+
+void AWPlayerController::Dash()
+{
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->Dash();
 	}
 }
 

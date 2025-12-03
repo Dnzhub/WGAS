@@ -9,12 +9,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "State/WPlayerState.h"
+#include "NiagaraSystem.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "UI/HUD/WHUD.h"
 
 
 AWPlayerCharacter::AWPlayerCharacter()
 {
-	
+	PrimaryActorTick.bCanEverTick = false;
+
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 400.f, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -23,7 +28,12 @@ AWPlayerCharacter::AWPlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	bIsDashing = false;
+	DashCooldown = 1.5;
+	DashSpeed = 8000.f;
 }
+
 
 void AWPlayerCharacter::Move(const FVector2d& MovementVector)
 {
@@ -60,6 +70,53 @@ void AWPlayerCharacter::StopLookMouseCursor()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
+void AWPlayerCharacter::Dash()
+{
+	if (bIsDashing || GetCharacterMovement()->IsFalling()) return;
+	bIsDashing = true;
+	GetCharacterMovement()->FallingLateralFriction = 5.f;
+	PlayDashEffect();
+	FVector Direction;
+	if (GetLastMovementInputVector().IsNearlyZero())
+	{
+		Direction = GetActorForwardVector(); // idle
+	}
+	else
+	{
+		Direction = GetLastMovementInputVector().GetSafeNormal(); // Move
+	}
+	FVector Velocity = Direction * DashSpeed;
+	Velocity.Z = 0.f;
+	
+	LaunchCharacter(Velocity,true,true);
+	
+	FTimerHandle DashTimerHandle;
+	GetWorldTimerManager().SetTimer(DashTimerHandle,[this]()
+	{
+		bIsDashing = false;
+		GetCharacterMovement()->FallingLateralFriction = 0.f;
+
+	},DashCooldown,false);
+
+
+}
+
+
+
+void AWPlayerCharacter::PlayDashEffect()
+{
+	UNiagaraComponent* EffectComp = UNiagaraFunctionLibrary::SpawnSystemAttached(
+	DashEffect,
+	GetRootComponent(),
+	NAME_None,
+	FVector::ZeroVector,
+	FRotator::ZeroRotator,
+	EAttachLocation::Type::KeepRelativeOffset,
+	true
+	);
+	
+
+}
 
 
 void AWPlayerCharacter::PossessedBy(AController* NewController)
@@ -75,6 +132,9 @@ void AWPlayerCharacter::OnRep_PlayerState()
 	//Set ability system component owner and avatar for the client
 	InitAbilityInfo();
 }
+
+
+
 void AWPlayerCharacter::InitAbilityInfo()
 {
 	AWPlayerState* PS = GetPlayerState<AWPlayerState>();
@@ -99,4 +159,5 @@ void AWPlayerCharacter::InitAbilityInfo()
 	
 	
 }
+
 

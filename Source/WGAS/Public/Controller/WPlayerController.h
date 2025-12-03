@@ -49,6 +49,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> AimAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> DashAction;
+
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnRep_Pawn() override;
 	void Move(const FInputActionValue& Value);
@@ -57,6 +60,7 @@ private:
 	void LookMouseCursor();
 	void StopLookMouseCursor();
 	void CursorTrace();
+	void Dash();
 
 	TScriptInterface<IInteractable> LastActor;
 	TScriptInterface<IInteractable> ThisActor;

@@ -31,15 +31,24 @@ void AWEffectActor::OnOverlap(AActor* TargetActor)
 {
 	if (InstantGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,InstantGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: InstantGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 	if (DurationGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,DurationGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: DurationGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 	if (InfiniteGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,InfiniteGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: InfiniteGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 }
 
@@ -47,15 +56,24 @@ void AWEffectActor::OnEndOverlap(AActor* TargetActor)
 {
 	if (InstantGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,InstantGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: InstantGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 	if (DurationGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,DurationGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: DurationGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 	if (InfiniteGameplayEffectPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyEffectToTarget(TargetActor,InfiniteGameplayEffectClass);
+		for (const TSubclassOf<UGameplayEffect>& GEClass: InfiniteGameplayEffectClass)
+		{
+			ApplyEffectToTarget(TargetActor,GEClass);
+		}
 	}
 
 	//Remove infinite effect

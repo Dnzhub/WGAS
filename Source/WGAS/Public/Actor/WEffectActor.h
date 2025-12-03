@@ -39,19 +39,19 @@ protected:
 	virtual void PostInitializeComponents() override;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
-	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+	TArray<TSubclassOf<UGameplayEffect>>  InstantGameplayEffectClass;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
 	EEffectApplicationPolicy InstantGameplayEffectPolicy = EEffectApplicationPolicy::DoNotApply;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
-	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
+	TArray<TSubclassOf<UGameplayEffect>> DurationGameplayEffectClass;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
 	EEffectApplicationPolicy DurationGameplayEffectPolicy = EEffectApplicationPolicy::DoNotApply;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
-	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
+	TArray<TSubclassOf<UGameplayEffect>> InfiniteGameplayEffectClass;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
 	EEffectApplicationPolicy InfiniteGameplayEffectPolicy = EEffectApplicationPolicy::DoNotApply;
