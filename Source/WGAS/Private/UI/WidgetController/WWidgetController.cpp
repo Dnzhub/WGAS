@@ -6,9 +6,11 @@
 void UWWidgetController::SetWidgetControllerParams(const FWidgetControllerParams& WidgetControllerParams)
 {
 	PlayerController = WidgetControllerParams.PlayerController;;
+	PlayerCharacter = WidgetControllerParams.PlayerCharacter;
 	PlayerState = WidgetControllerParams.PlayerState;
 	AbilitySystemComponent = WidgetControllerParams.AbilitySystemComponent;;
 	AttributeSet = WidgetControllerParams.AttributeSet;
+	
 }
 
 void UWWidgetController::BroadcastInitialValues()

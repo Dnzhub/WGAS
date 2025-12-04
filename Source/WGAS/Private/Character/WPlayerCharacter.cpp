@@ -9,9 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "State/WPlayerState.h"
-#include "NiagaraSystem.h"
-#include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "AbilitySystem/WAttributeSet.h"
 #include "UI/HUD/WHUD.h"
 
 
@@ -33,6 +32,12 @@ AWPlayerCharacter::AWPlayerCharacter()
 	DashCooldown = 1.5;
 	DashSpeed = 8000.f;
 }
+void AWPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	ApplyGameplayEffect(StaminaOvertimeGEClass);
+}
+
 
 
 void AWPlayerCharacter::Move(const FVector2d& MovementVector)
@@ -72,10 +77,17 @@ void AWPlayerCharacter::StopLookMouseCursor()
 
 void AWPlayerCharacter::Dash()
 {
+	if (UWAttributeSet* Attribute = CastChecked<UWAttributeSet>(AttributeSet))
+	{
+		if (Attribute->GetStamina() < StaminaCost) return;
+	}
 	if (bIsDashing || GetCharacterMovement()->IsFalling()) return;
+	
 	bIsDashing = true;
-	GetCharacterMovement()->FallingLateralFriction = 5.f;
 	PlayDashEffect();
+	ConsumeStamina();
+
+	GetCharacterMovement()->FallingLateralFriction = 5.f;
 	FVector Direction;
 	if (GetLastMovementInputVector().IsNearlyZero())
 	{
@@ -101,6 +113,11 @@ void AWPlayerCharacter::Dash()
 
 }
 
+void AWPlayerCharacter::ConsumeStamina()
+{
+	ApplyGameplayEffect(StaminaConsumptionGEClass);
+	OnStaminaConsume.Broadcast();
+}
 
 
 void AWPlayerCharacter::PlayDashEffect()
@@ -153,7 +170,7 @@ void AWPlayerCharacter::InitAbilityInfo()
 	{
 		if (AWHUD* MyHUD = Cast<AWHUD>(PlayerController->GetHUD()))
 		{
-			MyHUD->InitOverlay(PlayerController,PS,AbilitySystemComponent,AttributeSet);
+			MyHUD->InitOverlay(PlayerController,this,PS,AbilitySystemComponent,AttributeSet);
 		}
 	}
 	

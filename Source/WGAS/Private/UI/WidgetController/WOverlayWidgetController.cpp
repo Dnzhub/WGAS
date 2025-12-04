@@ -14,6 +14,8 @@ void UWOverlayWidgetController::BroadcastInitialValues()
 	OnMaxHealthChanged.Broadcast(Attribute->GetMaxHealth());
 	OnManaChanged.Broadcast(Attribute->GetMana());
 	OnMaxManaChanged.Broadcast(Attribute->GetMaxMana());
+	OnStaminaChanged.Broadcast(Attribute->GetStamina());
+	OnMaxStaminaChanged.Broadcast(Attribute->GetMaxStamina());
 	
 }
 
@@ -33,6 +35,12 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 	Attribute->GetMaxManaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxManaChanged);
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	Attribute->GetStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::StaminaChanged);
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	Attribute->GetMaxStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxStaminaChanged);
 }
 
 void UWOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
@@ -54,3 +62,13 @@ void UWOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Dat
 {
 	OnMaxManaChanged.Broadcast(Data.NewValue);
 }
+void UWOverlayWidgetController::StaminaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnStaminaChanged.Broadcast(Data.NewValue);
+}
+
+void UWOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& Data) const
+{
+	OnMaxStaminaChanged.Broadcast(Data.NewValue);
+}
+

@@ -6,6 +6,7 @@
 #include "WCharacterBase.h"
 #include "WPlayerCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStaminaConsumeSignature);
 
 class UNiagaraSystem;
 UCLASS()
@@ -20,12 +21,17 @@ public:
 	void LookMouseCursor(const FVector& TargetLocation);
 	void StopLookMouseCursor();
 	void Dash();
+	void ConsumeStamina();
 	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FOnStaminaConsumeSignature OnStaminaConsume;
 	
 protected:
 	void InitAbilityInfo();
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
 	UNiagaraSystem* DashEffect;
@@ -38,7 +44,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float DashSpeed{5.f};
 
+	UPROPERTY(EditDefaultsOnly)
+	float StaminaCost{20.f};
 
+	
 
 	void PlayDashEffect();
 

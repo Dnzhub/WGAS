@@ -27,7 +27,7 @@ public:
 
 	UWOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
 
-	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
+	void InitOverlay(APlayerController* PC,ACharacter* CH, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
 protected:
 	

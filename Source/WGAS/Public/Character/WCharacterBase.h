@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "WCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
@@ -24,6 +25,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect>  StaminaOvertimeGEClass;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> StaminaConsumptionGEClass;
+	
+	void ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;

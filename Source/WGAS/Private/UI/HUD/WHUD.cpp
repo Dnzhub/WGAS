@@ -17,7 +17,7 @@ UWOverlayWidgetController* AWHUD::GetOverlayWidgetController(const FWidgetContro
 	return OverlayWidgetController;
 }
 
-void AWHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
+void AWHUD::InitOverlay(APlayerController* PC,ACharacter* CH , APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
 
 	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class is NULL, fill out BP_HUD class"));
@@ -26,7 +26,7 @@ void AWHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemC
 	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget = Cast<UWUserWidget>(Widget); //Construct overlay widget
 	
-	const FWidgetControllerParams WidgetControllerParams(PC,PS,ASC,AS);
+	const FWidgetControllerParams WidgetControllerParams(PC,PS,ASC,AS,CH);
 	UWOverlayWidgetController* WidgetController =  GetOverlayWidgetController(WidgetControllerParams); //Construct overlay widget controller
 	
 	OverlayWidget->SetWidgetController(WidgetController); //Set that controller for the widget
