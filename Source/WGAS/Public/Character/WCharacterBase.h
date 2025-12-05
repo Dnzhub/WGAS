@@ -25,6 +25,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void InitAbilityInfo();
+
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
 	TSubclassOf<UGameplayEffect>  StaminaOvertimeGEClass;
 

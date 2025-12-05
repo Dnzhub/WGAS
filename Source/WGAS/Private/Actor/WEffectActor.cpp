@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/WAbilitySystemComponent.h"
+#include "AbilitySystem/WAttributeSet.h"
 
 
 AWEffectActor::AWEffectActor()
@@ -104,6 +105,10 @@ void AWEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGamepl
 	UAbilitySystemComponent* TargetAbilitySystemComp = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (!TargetAbilitySystemComp) return;
 
+	// float hpBase = TargetAbilitySystemComp->GetNumericAttributeBase(UWAttributeSet::GetHealthAttribute());
+	// GEngine->AddOnScreenDebugMessage(-1,2,FColor::Yellow,FString::Printf(TEXT("Health Base value: %f"),hpBase ));
+
+	
 	check(GameplayEffectClass);
 	
 	//Create Context(Whats causing it, who is causing effect, who is target of effect, is fire effect ? frost effect?)
@@ -112,7 +117,7 @@ void AWEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGamepl
 
 	//Create Spec for applying effect
 	const FGameplayEffectSpecHandle EffectSpecHandle = TargetAbilitySystemComp->MakeOutgoingSpec(
-		GameplayEffectClass,1.f,EffectContextHandle);
+		GameplayEffectClass,ActorLevel,EffectContextHandle);
 
 	//Applying effect to spec is more lightweight than applying effect to self
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetAbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());

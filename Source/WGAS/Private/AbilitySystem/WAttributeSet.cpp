@@ -15,7 +15,7 @@ UWAttributeSet::UWAttributeSet()
 	InitMaxHealth(100.f);
 	InitMana(25.f);
 	InitMaxMana(100.f);
-	InitStamina(0.f);
+	InitStamina(100.f);
 	InitMaxStamina(100.f);
 }
 

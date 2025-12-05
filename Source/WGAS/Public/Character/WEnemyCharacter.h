@@ -22,4 +22,5 @@ public:
 	/** End IInteractable **/
 protected:
 	virtual void BeginPlay() override;
+	virtual void InitAbilityInfo() override;
 };

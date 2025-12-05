@@ -27,6 +27,10 @@ void AWCharacterBase::BeginPlay()
 	
 }
 
+void AWCharacterBase::InitAbilityInfo()
+{
+}
+
 void AWCharacterBase::ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	if (!AbilitySystemComponent) return;

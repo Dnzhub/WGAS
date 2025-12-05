@@ -30,7 +30,6 @@ public:
 	FOnStaminaConsumeSignature OnStaminaConsume;
 	
 protected:
-	void InitAbilityInfo();
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
@@ -47,8 +46,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float StaminaCost{20.f};
 
-	
-
 	void PlayDashEffect();
+private:
+	virtual void InitAbilityInfo() override;
 
 };

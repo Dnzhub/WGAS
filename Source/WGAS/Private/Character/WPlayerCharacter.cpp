@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "State/WPlayerState.h"
 #include "NiagaraFunctionLibrary.h"
+#include "AbilitySystem/WAbilitySystemComponent.h"
 #include "AbilitySystem/WAttributeSet.h"
 #include "UI/HUD/WHUD.h"
 
@@ -157,7 +158,7 @@ void AWPlayerCharacter::InitAbilityInfo()
 	AWPlayerState* PS = GetPlayerState<AWPlayerState>();
 	check(PS);
 	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
-	
+	Cast<UWAbilitySystemComponent>(PS->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
 	AttributeSet = PS->GetAttributeSet();
 

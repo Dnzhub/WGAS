@@ -38,6 +38,13 @@ void AWEnemyCharacter::UnHighlightActor()
 void AWEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityInfo();
+}
+
+void AWEnemyCharacter::InitAbilityInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+
 }
 
