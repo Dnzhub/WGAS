@@ -40,9 +40,9 @@ void UWAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	
 }
 
-void UWAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+void UWAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
-	Super::PreAttributeChange(Attribute, NewValue);
+	Super::PreAttributeBaseChange(Attribute, NewValue);
 
 	if (Attribute == GetHealthAttribute())
 	{
@@ -145,13 +145,13 @@ void UWAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) con
 
 void UWAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxMana, OldStamina);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Stamina, OldStamina);
 
 }
 
 void UWAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxMana, OldMaxStamina);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,MaxStamina, OldMaxStamina);
 
 }
 

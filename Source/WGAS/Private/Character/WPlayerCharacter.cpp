@@ -36,7 +36,6 @@ AWPlayerCharacter::AWPlayerCharacter()
 void AWPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	ApplyGameplayEffect(StaminaOvertimeGEClass);
 }
 
 
@@ -161,6 +160,8 @@ void AWPlayerCharacter::InitAbilityInfo()
 	Cast<UWAbilitySystemComponent>(PS->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
 	AttributeSet = PS->GetAttributeSet();
+
+	ApplyGameplayEffect(StaminaOvertimeGEClass);
 
 	/**
 	//Only client itself has valid player controller. 

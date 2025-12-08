@@ -70,7 +70,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	//Whenever an attribute change this function will fire BEFORE the change occurs (Use it only for clamping)
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
 
 	//Whenever an attribute change this function will fire AFTER the change occurs
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;

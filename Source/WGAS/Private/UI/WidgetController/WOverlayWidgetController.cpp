@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/WOverlayWidgetController.h"
 
+#include "AbilitySystem/WAbilitySystemComponent.h"
 #include "AbilitySystem/WAttributeSet.h"
 
 void UWOverlayWidgetController::BroadcastInitialValues()
@@ -41,6 +42,16 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 	Attribute->GetMaxStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxStaminaChanged);
+
+	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+	[](const FGameplayTagContainer& AssetTags)
+	{
+		for (const FGameplayTag& Tag : AssetTags)
+		{
+			const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Msg);
+		}	
+	});
 }
 
 void UWOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
@@ -65,10 +76,12 @@ void UWOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Dat
 void UWOverlayWidgetController::StaminaChanged(const FOnAttributeChangeData& Data) const
 {
 	OnStaminaChanged.Broadcast(Data.NewValue);
+
 }
 
 void UWOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxStaminaChanged.Broadcast(Data.NewValue);
+
 }
 
