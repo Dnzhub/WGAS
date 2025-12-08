@@ -44,12 +44,14 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 	Attribute->GetMaxStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxStaminaChanged);
 
 	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-	[](const FGameplayTagContainer& AssetTags)
+	[this](const FGameplayTagContainer& AssetTags)
 	{
 		for (const FGameplayTag& Tag : AssetTags)
 		{
 			const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Msg);
+
+			FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
 		}	
 	});
 }

@@ -5,7 +5,7 @@
 
 void UWAbilitySystemComponent::AbilityActorInfoSet()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,& UWAbilitySystemComponent::EffectApplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UWAbilitySystemComponent::EffectApplied);
 }
 
 void UWAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
