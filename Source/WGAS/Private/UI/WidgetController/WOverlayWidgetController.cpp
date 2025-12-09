@@ -26,22 +26,41 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 
 	//Bind delegates for specific attributes
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		Attribute->GetHealthAttribute()).AddUObject(this,&UWOverlayWidgetController::HealthChanged);
+	Attribute->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnHealthChanged.Broadcast(Data.NewValue);
+	});
+
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	Attribute->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxHealthChanged.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	Attribute->GetMaxHealthAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxHealthChanged);
+	Attribute->GetManaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnManaChanged.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	Attribute->GetManaAttribute()).AddUObject(this,&UWOverlayWidgetController::ManaChanged);
+	Attribute->GetMaxManaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxManaChanged.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	Attribute->GetMaxManaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxManaChanged);
+	Attribute->GetStaminaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnStaminaChanged.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	Attribute->GetStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::StaminaChanged);
-
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-	Attribute->GetMaxStaminaAttribute()).AddUObject(this,&UWOverlayWidgetController::MaxStaminaChanged);
+	Attribute->GetMaxStaminaAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxStaminaChanged.Broadcast(Data.NewValue);
+	});
 
 	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 	[this](const FGameplayTagContainer& AssetTags)
@@ -60,34 +79,5 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 	});
 }
 
-void UWOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChanged.Broadcast(Data.NewValue);
-}
 
-void UWOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChanged.Broadcast(Data.NewValue);
-
-}
-void UWOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChanged.Broadcast(Data.NewValue);
-}
-
-void UWOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChanged.Broadcast(Data.NewValue);
-}
-void UWOverlayWidgetController::StaminaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnStaminaChanged.Broadcast(Data.NewValue);
-
-}
-
-void UWOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxStaminaChanged.Broadcast(Data.NewValue);
-
-}
 
