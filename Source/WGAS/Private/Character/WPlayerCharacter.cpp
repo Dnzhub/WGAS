@@ -176,7 +176,7 @@ void AWPlayerCharacter::InitAbilityInfo()
 		}
 	}
 	ApplyGameplayEffect(StaminaOvertimeGEClass);
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 	
 }
 

@@ -12,11 +12,8 @@
 UWAttributeSet::UWAttributeSet()
 {
 	InitHealth(50.f);
-	InitMaxHealth(100.f);
 	InitMana(25.f);
-	InitMaxMana(100.f);
 	InitStamina(100.f);
-	InitMaxStamina(100.f);
 }
 
 
@@ -30,21 +27,36 @@ void UWAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	with REPNOTIFY_OnChangged, it will only run if the newvalue and oldvalue are different
 	 * **/
+
+	//Vital Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Health,COND_None,REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxHealth,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Mana,COND_None,REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Stamina,COND_None,REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxStamina,COND_None,REPNOTIFY_Always);
+
+	//Primary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Strength,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Dexterity,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Intelligence,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Vigor,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Resilience,COND_None,REPNOTIFY_Always);
 
-	
+	//Secondary Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxHealth,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxStamina,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Armor,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,ArmorPenetration,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,BlockChance,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,CriticalHitChance,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,CriticalHitDamage,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,CriticalHitResistance,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,HealthRegeneration,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,ManaRegeneration,COND_None,REPNOTIFY_Always);
+
+
 }
 
-void UWAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) 
+void UWAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const 
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 
@@ -188,5 +200,48 @@ void UWAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelli
 void UWAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Vigor, OldVigor);
+}
 
+void UWAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Resilience, OldResilience);
+}
+
+void UWAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Armor, OldArmor);
+}
+void UWAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,ArmorPenetration, OldArmorPenetration);
+}
+void UWAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,BlockChance, OldBlockChance);
+}
+
+void UWAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,CriticalHitChance, OldCriticalHitChance);
+}
+
+void UWAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,CriticalHitDamage, OldCriticalHitDamage);
+
+}
+void UWAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,CriticalHitResistance, OldCriticalHitResistance);
+}
+
+void UWAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,HealthRegeneration, OldHealthRegeneration);
+
+}
+
+void UWAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,ManaRegeneration, OldManaRegeneration);
 }

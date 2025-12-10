@@ -36,14 +36,16 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
-	void InitializePrimaryAttributes();
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
 
+	void InitializeDefaultAttributes() const;
 	/*
 	 * Params:
 	 * GameplayEffectClass -> Adds any gameplayeffect to character
 	 * ApplySelf: If true GE spec will apply to self, otherwise it will apply spec to target
 	 */
-	void ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffectClass, bool ApplySelf = true) const;
+	void ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffectClass,float level = 1) const;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
