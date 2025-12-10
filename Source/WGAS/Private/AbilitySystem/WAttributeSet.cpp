@@ -36,11 +36,15 @@ void UWAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Stamina,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,MaxStamina,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Strength,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Dexterity,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Intelligence,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UWAttributeSet,Vigor,COND_None,REPNOTIFY_Always);
 
 	
 }
 
-void UWAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
+void UWAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) 
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 
@@ -69,7 +73,18 @@ void UWAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCa
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
-	
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(),0.f, GetMaxHealth()));
+	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(),0.f, GetMaxMana()));
+	}
+	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
+	{
+		SetStamina(FMath::Clamp(GetStamina(),0.f, GetMaxStamina()));
+	}
 }
 
 void UWAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data,
@@ -155,3 +170,23 @@ void UWAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamin
 
 }
 
+void UWAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Strength, OldStrength);
+}
+
+void UWAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Dexterity, OldDexterity);
+}
+
+void UWAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Intelligence, OldIntelligence);
+}
+
+void UWAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UWAttributeSet,Vigor, OldVigor);
+
+}

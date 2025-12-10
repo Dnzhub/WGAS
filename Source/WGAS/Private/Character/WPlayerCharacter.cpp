@@ -161,7 +161,7 @@ void AWPlayerCharacter::InitAbilityInfo()
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
 	AttributeSet = PS->GetAttributeSet();
 
-	ApplyGameplayEffect(StaminaOvertimeGEClass);
+	
 
 	/**
 	//Only client itself has valid player controller. 
@@ -175,7 +175,8 @@ void AWPlayerCharacter::InitAbilityInfo()
 			MyHUD->InitOverlay(PlayerController,this,PS,AbilitySystemComponent,AttributeSet);
 		}
 	}
-	
+	ApplyGameplayEffect(StaminaOvertimeGEClass);
+	InitializePrimaryAttributes();
 	
 }
 
