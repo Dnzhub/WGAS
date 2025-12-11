@@ -11,9 +11,9 @@
 
 UWAttributeSet::UWAttributeSet()
 {
-	InitHealth(50.f);
-	InitMana(25.f);
-	InitStamina(100.f);
+	// InitHealth(50.f);
+	// InitMana(25.f);
+	// InitStamina(100.f);
 }
 
 

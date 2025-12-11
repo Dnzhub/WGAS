@@ -33,6 +33,14 @@ AWPlayerCharacter::AWPlayerCharacter()
 	DashCooldown = 1.5;
 	DashSpeed = 8000.f;
 }
+
+int32 AWPlayerCharacter::GetPlayerLevel()
+{
+	const AWPlayerState* PS = GetPlayerState<AWPlayerState>();
+	check(PS);
+	return PS->GetPlayerLevel();
+}
+
 void AWPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -175,7 +183,6 @@ void AWPlayerCharacter::InitAbilityInfo()
 			MyHUD->InitOverlay(PlayerController,this,PS,AbilitySystemComponent,AttributeSet);
 		}
 	}
-	ApplyGameplayEffect(StaminaOvertimeGEClass);
 	InitializeDefaultAttributes();
 	
 }

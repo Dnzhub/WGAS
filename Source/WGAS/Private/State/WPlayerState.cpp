@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/WAbilitySystemComponent.h"
 #include "AbilitySystem/WAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 AWPlayerState::AWPlayerState()
 {
@@ -20,4 +21,15 @@ AWPlayerState::AWPlayerState()
 UAbilitySystemComponent* AWPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void AWPlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWPlayerState,level)
+}
+
+void AWPlayerState::OnRep_Level(int32 OldLevel)
+{
+	
 }

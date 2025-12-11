@@ -36,7 +36,13 @@ void AWCharacterBase::InitializeDefaultAttributes() const
 {
 	ApplyGameplayEffect(DefaultPrimaryAttributes);
 	ApplyGameplayEffect(DefaultSecondaryAttributes);
+	ApplyGameplayEffect(DefaultVitalAttributes);
+	ApplyGameplayEffect(StaminaGenerationGEClass);
+	
+}
 
+void AWCharacterBase::ConsumeStamina()
+{
 }
 
 void AWCharacterBase::ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffectClass,float level) const
@@ -46,7 +52,7 @@ void AWCharacterBase::ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayE
 	
 	//Create Context(Whats causing it, who is causing effect, who is target of effect, is fire effect ? frost effect?)
 	FGameplayEffectContextHandle EffectContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	//EffectContextHandle.AddSourceObject(this); // What causes this effect ?
+	EffectContextHandle.AddSourceObject(this); // What causes this effect ?
 
 	//Create Spec for applying effect
 	const FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(

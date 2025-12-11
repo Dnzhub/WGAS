@@ -21,14 +21,18 @@ public:
 	void LookMouseCursor(const FVector& TargetLocation);
 	void StopLookMouseCursor();
 	void Dash();
-	void ConsumeStamina();
+	virtual void ConsumeStamina() override;
 	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnStaminaConsumeSignature OnStaminaConsume;
-	
+
+	/** Combat Interface **/
+
+	virtual int32 GetPlayerLevel() override;
+	/** End Combat Interface **/
 protected:
 	virtual void BeginPlay() override;
 

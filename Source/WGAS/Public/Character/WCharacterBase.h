@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "WCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -12,7 +13,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 
 UCLASS(Abstract)
-class WGAS_API AWCharacterBase : public ACharacter, public IAbilitySystemInterface
+class WGAS_API AWCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -28,7 +29,7 @@ protected:
 	virtual void InitAbilityInfo();
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
-	TSubclassOf<UGameplayEffect>  StaminaOvertimeGEClass;
+	TSubclassOf<UGameplayEffect>  StaminaGenerationGEClass;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Effects")
 	TSubclassOf<UGameplayEffect> StaminaConsumptionGEClass;
@@ -39,7 +40,12 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+	
 	void InitializeDefaultAttributes() const;
+	virtual void ConsumeStamina();
+
 	/*
 	 * Params:
 	 * GameplayEffectClass -> Adds any gameplayeffect to character
