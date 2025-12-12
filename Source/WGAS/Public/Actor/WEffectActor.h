@@ -31,6 +31,7 @@ class WGAS_API AWEffectActor : public AActor
 {
 	GENERATED_BODY()
 
+	
 public:
 	AWEffectActor();
 

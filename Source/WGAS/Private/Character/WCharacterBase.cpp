@@ -36,7 +36,11 @@ void AWCharacterBase::InitializeDefaultAttributes() const
 {
 	ApplyGameplayEffect(DefaultPrimaryAttributes);
 	ApplyGameplayEffect(DefaultSecondaryAttributes);
+
+	//Vital attributes depends their max values and max values are in secondary attributes
+	//Call it after secondary attributes initialized
 	ApplyGameplayEffect(DefaultVitalAttributes);
+	
 	ApplyGameplayEffect(StaminaGenerationGEClass);
 	
 }

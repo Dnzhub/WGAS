@@ -29,8 +29,6 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 	Attribute->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
 	{
 		OnHealthChanged.Broadcast(Data.NewValue);
-	
-
 	});
 
 	
