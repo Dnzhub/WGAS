@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "WWidgetController.h"
+#include "Controller/WPlayerController.h"
 #include "WOverlayWidgetController.generated.h"
 
 class UWUserWidget;
@@ -30,6 +31,7 @@ struct FUIWidgetRow : public FTableRowBase
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangeSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttributeMenuPressedSignature);
 
 
 /**
@@ -66,7 +68,16 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
-	
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|UI")
+	FOnAttributeMenuPressedSignature OnAttributeMenuPressed;
+
+	UFUNCTION(BlueprintCallable, Category="GAS|UI")
+	FORCEINLINE bool IsAttributeMenuEnabled() {return bIsAttributeMenuEnabled;}
+
+	//if bIsAttributeMenuEnabled true it will make it false or vise-versa
+	UFUNCTION(BlueprintCallable, Category="GAS|UI")
+	FORCEINLINE void SetAttributeMenuEnabled(){ bIsAttributeMenuEnabled = !bIsAttributeMenuEnabled;};
 protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="Widget Data")
@@ -74,6 +85,10 @@ protected:
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+private:
+
+	bool bIsAttributeMenuEnabled = false;
 };
 
 template <typename T>

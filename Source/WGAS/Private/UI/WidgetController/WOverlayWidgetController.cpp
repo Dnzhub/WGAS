@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/WAbilitySystemComponent.h"
 #include "AbilitySystem/WAttributeSet.h"
+#include "Controller/WPlayerController.h"
 
 void UWOverlayWidgetController::BroadcastInitialValues()
 {
@@ -62,6 +63,14 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 		OnMaxStaminaChanged.Broadcast(Data.NewValue);
 	});
 
+
+	Cast<AWPlayerController>(PlayerController)->OnAttributeMenuPressed.AddLambda([this]()
+	{
+		OnAttributeMenuPressed.Broadcast();
+	});
+	
+		
+
 	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 	[this](const FGameplayTagContainer& AssetTags)
 	{
@@ -78,6 +87,7 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 		}	
 	});
 }
+
 
 
 

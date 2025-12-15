@@ -56,6 +56,7 @@ void AWPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&AWPlayerController::LookMouseCursor);
 	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Completed,this,&AWPlayerController::StopLookMouseCursor);
 	EnhancedInputComponent->BindAction(DashAction,ETriggerEvent::Started,this,&AWPlayerController::Dash);
+	EnhancedInputComponent->BindAction(AttributeMenuAction,ETriggerEvent::Started,this,&AWPlayerController::AttributeMenuPressed);
 
 }
 
@@ -151,5 +152,10 @@ void AWPlayerController::Dash()
 	{
 		ControlledCharacter->Dash();
 	}
+}
+
+void AWPlayerController::AttributeMenuPressed()
+{
+	OnAttributeMenuPressed.Broadcast();
 }
 

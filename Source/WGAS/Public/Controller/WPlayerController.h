@@ -15,6 +15,8 @@ struct FInputActionValue;
 class AWPlayerCharacter;
 class IInteractable;
 
+DECLARE_MULTICAST_DELEGATE(FOnAttributeMenuPressed);
+
 UCLASS()
 class WGAS_API AWPlayerController : public APlayerController
 {
@@ -29,12 +31,17 @@ public:
 	bool IsAiming();
 
 	
+
+	FOnAttributeMenuPressed OnAttributeMenuPressed;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	UPROPERTY(BlueprintReadWrite, Category = Input)
 	bool bIsAiming;
 
+
+	
 private:
 
 	UPROPERTY()
@@ -52,6 +59,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> DashAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> AttributeMenuAction;
+	
+
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnRep_Pawn() override;
 	void Move(const FInputActionValue& Value);
@@ -61,7 +72,7 @@ private:
 	void StopLookMouseCursor();
 	void CursorTrace();
 	void Dash();
-
+	void AttributeMenuPressed();
 	TScriptInterface<IInteractable> LastActor;
 	TScriptInterface<IInteractable> ThisActor;
 
