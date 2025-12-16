@@ -3,6 +3,7 @@
 
 #include "UI/HUD/WHUD.h"
 #include "UI/Widget/WUserWidget.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/WOverlayWidgetController.h"
 
 UWOverlayWidgetController* AWHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
@@ -17,6 +18,17 @@ UWOverlayWidgetController* AWHUD::GetOverlayWidgetController(const FWidgetContro
 	return OverlayWidgetController;
 }
 
+UAttributeMenuWidgetController* AWHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (!AttributeMenuWidgetController)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this,AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+		AttributeMenuWidgetController->BindCallbackDependencies();
+	}
+	return AttributeMenuWidgetController;
+}
+
 void AWHUD::InitOverlay(APlayerController* PC,ACharacter* CH , APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
 
@@ -28,6 +40,8 @@ void AWHUD::InitOverlay(APlayerController* PC,ACharacter* CH , APlayerState* PS,
 	
 	const FWidgetControllerParams WidgetControllerParams(PC,PS,ASC,AS,CH);
 	UWOverlayWidgetController* WidgetController =  GetOverlayWidgetController(WidgetControllerParams); //Construct overlay widget controller
+
+
 	
 	OverlayWidget->SetWidgetController(WidgetController); //Set that controller for the widget
 	WidgetController->BroadcastInitialValues();

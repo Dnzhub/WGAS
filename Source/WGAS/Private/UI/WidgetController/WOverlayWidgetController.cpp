@@ -64,10 +64,6 @@ void UWOverlayWidgetController::BindCallbackDependencies()
 	});
 
 
-	Cast<AWPlayerController>(PlayerController)->OnAttributeMenuPressed.AddLambda([this]()
-	{
-		OnAttributeMenuPressed.Broadcast();
-	});
 	
 		
 
