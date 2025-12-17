@@ -6,7 +6,10 @@
 #include "WWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
+class UAttributeInfo;
+struct FWAttributeInfo;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttributeMenuPressedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FWAttributeInfo&, Info);
 
 /**
  * 
@@ -20,6 +23,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|UI")
 	FOnAttributeMenuPressedSignature OnAttributeMenuPressed;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FAttributeInfoSignature AttributeInfoDelegate;
 	
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbackDependencies() override;
@@ -32,6 +38,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="GAS|UI")
 	FORCEINLINE void SetAttributeMenuEnabled(){ bIsAttributeMenuEnabled = !bIsAttributeMenuEnabled;};
 
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeInfo;
+	
 private:
 	bool bIsAttributeMenuEnabled = false;
+	void BroadcastAttributeInfo(const FWAttributeInfo& Info);
 };

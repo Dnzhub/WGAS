@@ -14,6 +14,8 @@ struct FWGameplayTags
 
 public:
 	static const FWGameplayTags& Get() { return GameplayTags;}
+
+	//Called in WAssetManager
 	static void InitializeNativeGameplayTags();
 
 	/*

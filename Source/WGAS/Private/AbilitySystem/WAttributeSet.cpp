@@ -7,13 +7,19 @@
 #include "AbilitySystemComponent.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
+#include "WGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 
 UWAttributeSet::UWAttributeSet()
 {
-	// InitHealth(50.f);
-	// InitMana(25.f);
-	// InitStamina(100.f);
+	const FWGameplayTags& GameplayTags = FWGameplayTags::Get();
+
+	//Example: use it for add tags and attributes to map
+	//TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity, GetDexterityAttribute);
+	
+
+
+
 }
 
 
