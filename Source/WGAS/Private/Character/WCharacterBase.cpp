@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
+#include "AbilitySystem/WAbilitySystemComponent.h"
 
 AWCharacterBase::AWCharacterBase()
 {
@@ -68,6 +69,14 @@ void AWCharacterBase::ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayE
 	
 
 	
+}
+
+void AWCharacterBase::AddCharacterAbilities()
+{
+	UWAbilitySystemComponent* ASC = CastChecked<UWAbilitySystemComponent>(AbilitySystemComponent);
+	//If not server return
+	if (!HasAuthority()) return;
+	ASC->AddCharacterAbilities(StartupAbilities);
 }
 
 

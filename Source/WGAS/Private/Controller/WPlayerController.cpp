@@ -2,9 +2,14 @@
 
 
 #include "Controller/WPlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "GameplayTagContainer.h"
+#include "WGameplayTags.h"
+#include "AbilitySystem/WAbilitySystemComponent.h"
 #include "Character/WPlayerCharacter.h"
+#include "Input/WInputComponent.h"
 #include "Interaction/Interactable.h"
 #include "WGAS/WGAS.h"
 
@@ -51,13 +56,14 @@ void AWPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AWPlayerController::Move);
-	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&AWPlayerController::LookMouseCursor);
-	EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Completed,this,&AWPlayerController::StopLookMouseCursor);
-	EnhancedInputComponent->BindAction(DashAction,ETriggerEvent::Started,this,&AWPlayerController::Dash);
-	EnhancedInputComponent->BindAction(AttributeMenuAction,ETriggerEvent::Started,this,&AWPlayerController::AttributeMenuPressed);
+	UWInputComponent* WInputComponent = CastChecked<UWInputComponent>(InputComponent);
+	WInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AWPlayerController::Move);
+	WInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&AWPlayerController::LookMouseCursor);
+	WInputComponent->BindAction(AimAction,ETriggerEvent::Completed,this,&AWPlayerController::StopLookMouseCursor);
+	WInputComponent->BindAction(DashAction,ETriggerEvent::Started,this,&AWPlayerController::Dash);
+	WInputComponent->BindAction(AttributeMenuAction,ETriggerEvent::Started,this,&AWPlayerController::AttributeMenuPressed);
 
+	WInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::AbilityInputTagPressed,&ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagHeld);
 }
 
 void AWPlayerController::OnPossess(APawn* InPawn)
@@ -159,3 +165,33 @@ void AWPlayerController::AttributeMenuPressed()
 	OnAttributeMenuPressed.Broadcast();
 }
 
+void AWPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//if input is LMB
+	if (InputTag.MatchesTagExact(FWGameplayTags::Get().InputTag_LMB))
+	{
+		
+	}
+}
+
+void AWPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (!GetAbilitySystemComponent()) return;;
+	GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+void AWPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (!GetAbilitySystemComponent()) return;;
+	GetAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+}
+
+UWAbilitySystemComponent* AWPlayerController::GetAbilitySystemComponent()
+{
+	if (!WAbilitySystemComponent)
+	{
+		WAbilitySystemComponent = Cast<UWAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(
+			GetPawn<APawn>()));
+	}
+	return WAbilitySystemComponent;
+}

@@ -33,6 +33,20 @@ AWPlayerCharacter::AWPlayerCharacter()
 	DashCooldown = 1.5;
 	DashSpeed = 8000.f;
 }
+void AWPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	//Set ability system component owner and avatar for the server
+	InitAbilityInfo();
+	AddCharacterAbilities();
+}
+
+void AWPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	//Set ability system component owner and avatar for the client
+	InitAbilityInfo();
+}
 
 int32 AWPlayerCharacter::GetPlayerLevel()
 {
@@ -144,19 +158,6 @@ void AWPlayerCharacter::PlayDashEffect()
 }
 
 
-void AWPlayerCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-	//Set ability system component owner and avatar for the server
-	InitAbilityInfo();
-}
-
-void AWPlayerCharacter::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-	//Set ability system component owner and avatar for the client
-	InitAbilityInfo();
-}
 
 
 

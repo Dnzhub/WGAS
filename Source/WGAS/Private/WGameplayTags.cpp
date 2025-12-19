@@ -36,4 +36,14 @@ void FWGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_Vital_Mana= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Mana"));
 	GameplayTags.Attributes_Vital_Stamina= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Stamina"));
 
+	//Input Tags
+	GameplayTags.InputTag_LMB= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.LMB"), FString("Input Left Mouse Button "));
+	GameplayTags.InputTag_RMB= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.RMB"), FString("Input Right Mouse Button "));
+	GameplayTags.InputTag_1= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.1"), FString("Input Button 1"));
+	GameplayTags.InputTag_2= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.2"), FString("Input Button 2"));
+	GameplayTags.InputTag_3= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.3"), FString("Input Button 3"));
+	GameplayTags.InputTag_4= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.4"), FString("Input Button 4"));
+
+
+
 }
