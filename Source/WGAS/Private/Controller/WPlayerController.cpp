@@ -95,18 +95,18 @@ void AWPlayerController::Move(const FInputActionValue& Value)
 void AWPlayerController::LookMouseCursor() 
 {
 	bIsAiming = true;
-	FHitResult HitResult;
 	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Cursor);
 
-	bool bHit = GetHitResultUnderCursorByChannel(TraceType,true,HitResult);
-	if (bHit)
-	{
-		if(ControlledCharacter)
-		{
-			ControlledCharacter->LookMouseCursor( HitResult.Location);
-		}
-	}
-
+	FHitResult Hit;
+	bool bHit = GetHitResultUnderCursorByChannel(TraceType,true,Hit);
+	 if (bHit)
+	 {
+	 	if(ControlledCharacter)
+	 	{
+	 		ControlledCharacter->LookMouseCursor( Hit.Location);
+	 	}
+	 }
+	
 	
 }
 
@@ -121,34 +121,17 @@ void AWPlayerController::StopLookMouseCursor()
 
 void AWPlayerController::CursorTrace()
 {
-	FHitResult HitResult;
+	
 	GetHitResultUnderCursor(ECC_Visibility,false,HitResult);
 	if (!HitResult.bBlockingHit) return;
 
 	LastActor = ThisActor;
 	ThisActor = HitResult.GetActor();
 
-	if (!LastActor)
+	if (LastActor != ThisActor)
 	{
-		if (ThisActor)
-		{
-			ThisActor->HighlightActor();
-		}
-	}
-	else //LastActor is valid
-	{
-		if (!ThisActor)
-		{
-			LastActor->UnHighlightActor();
-		}
-		else // Both actors are valid
-		{
-			if (LastActor != ThisActor)
-			{
-				LastActor->UnHighlightActor();
-				ThisActor->HighlightActor();
-			}
-		}
+		if (LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->HighlightActor();
 	}
 }
 

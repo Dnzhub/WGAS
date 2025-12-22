@@ -29,8 +29,10 @@ public:
 
 protected:
 
-	
+	// Reliable: Even if package lost it guarantee will reach to client
+	// Call in server but execute in client
+	UFUNCTION(Client, Reliable)
 	//Delegate binding for when an effect is applied
-	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
+	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
 		FActiveGameplayEffectHandle ActiveEffectHandle);
 };

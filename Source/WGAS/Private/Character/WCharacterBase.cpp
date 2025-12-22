@@ -12,8 +12,9 @@ AWCharacterBase::AWCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
+	Weapon->SetupAttachment(GetMesh(), WeaponSocketName);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
@@ -69,6 +70,12 @@ void AWCharacterBase::ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayE
 	
 
 	
+}
+
+FVector AWCharacterBase::GetCombatSocketLocation()
+{
+	check(Weapon);
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
 }
 
 void AWCharacterBase::AddCharacterAbilities()

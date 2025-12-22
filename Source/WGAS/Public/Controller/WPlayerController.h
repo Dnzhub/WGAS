@@ -79,6 +79,7 @@ private:
 	void AttributeMenuPressed();
 	TScriptInterface<IInteractable> LastActor;
 	TScriptInterface<IInteractable> ThisActor;
+	FHitResult HitResult;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
