@@ -3,6 +3,7 @@
 
 #include "WAssetManager.h"
 #include "WGameplayTags.h"
+#include "AbilitySystemGlobals.h"
 
 UWAssetManager& UWAssetManager::Get()
 {
@@ -15,6 +16,8 @@ UWAssetManager& UWAssetManager::Get()
 void UWAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
-
 	FWGameplayTags::InitializeNativeGameplayTags();
+
+	//This is required to use Target data!!
+	UAbilitySystemGlobals::Get().InitGlobalData();
 }
