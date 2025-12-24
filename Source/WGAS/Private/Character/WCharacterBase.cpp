@@ -7,10 +7,14 @@
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystem/WAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 
 AWCharacterBase::AWCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 
 	
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");

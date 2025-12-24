@@ -16,7 +16,7 @@ void UWProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 
 }
 
-void UWProjectileAbility::SpawnProjectile()
+void UWProjectileAbility::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
 	
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
@@ -25,10 +25,12 @@ void UWProjectileAbility::SpawnProjectile()
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+		FRotator Rotation  = (ProjectileTargetLocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
 		
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-		//TODO: Set projectile rotation
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
 		//SpawnActorDeferred : allows you to delay the initialization of an actor until after you've configured its properties
 		AWProjectile* Projectile = GetWorld()->SpawnActorDeferred<AWProjectile>(ProjectileClass,
