@@ -68,7 +68,15 @@ private:
 
 
 	void LookMouseCursor();
+
+	UFUNCTION(Server, Reliable)
+	void Server_LookMouseCursor(const FVector& TargetLocation);
+	
 	void StopLookMouseCursor();
+
+	UFUNCTION(Server, Reliable)
+	void Server_StopLookMouseCursor();
+	
 	void CursorTrace();
 	void Dash();
 	void AttributeMenuPressed();

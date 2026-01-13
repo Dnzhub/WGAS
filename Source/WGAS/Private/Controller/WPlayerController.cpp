@@ -92,28 +92,68 @@ void AWPlayerController::Move(const FInputActionValue& Value)
 }
 
 
+
+
 void AWPlayerController::LookMouseCursor() 
 {
 	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Cursor);
 
 	FHitResult Hit;
 	bool bHit = GetHitResultUnderCursorByChannel(TraceType,true,Hit);
-	 if (bHit)
+	 if (bHit && ControlledCharacter)
 	 {
-	 	if(ControlledCharacter)
+	 	//ControlledCharacter->Execute_FaceToTarget(ControlledCharacter,Hit.Location,7.5f);
+
+	 	// If we're the server, execute directly
+	 	if (HasAuthority())
 	 	{
-	 		ControlledCharacter->Execute_FaceToTarget(ControlledCharacter,Hit.Location,7.5f);
+	 		ControlledCharacter->Execute_FaceToTarget(ControlledCharacter, Hit.Location, 7.5f);
+	 	}
+	 	else
+	 	{
+	 		// If we're a client, execute locally for immediate feedback AND send to server
+	 		ControlledCharacter->Execute_FaceToTarget(ControlledCharacter, Hit.Location, 7.5f);
+	 		Server_LookMouseCursor(Hit.Location);
 	 	}
 	 }
 	
 	
 }
 
+void AWPlayerController::Server_LookMouseCursor_Implementation(const FVector& TargetLocation)
+{
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->Execute_FaceToTarget(ControlledCharacter, TargetLocation, 7.5f);
+	}
+}
+
 void AWPlayerController::StopLookMouseCursor()
 {
-	if(ControlledCharacter)
+	// if(ControlledCharacter)
+	// {
+	// 	ControlledCharacter->Execute_StopFaceToTarget(ControlledCharacter);
+	// }
+
+	// If we're the server, execute directly
+	if (HasAuthority())
 	{
 		ControlledCharacter->Execute_StopFaceToTarget(ControlledCharacter);
+	}
+	else
+	{
+		// If we're a client, execute locally for immediate feedback AND send to server
+		ControlledCharacter->Execute_StopFaceToTarget(ControlledCharacter);
+		Server_StopLookMouseCursor();
+	}
+}
+
+void AWPlayerController::Server_StopLookMouseCursor_Implementation()
+{
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->Execute_StopFaceToTarget(ControlledCharacter);
+
 	}
 }
 

@@ -19,6 +19,9 @@ public:
 	
 	void Move(const FVector2d& MovementVector);
 
+	
+
+
 	virtual void FaceToTarget_Implementation(const FVector& TargetLocation,float InterpSpeed) override;
 	virtual void StopFaceToTarget_Implementation() override;
 
@@ -38,6 +41,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
+	virtual FRotator GetBaseAimRotation() const override;
+	
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Movement")
+	FRotator ReplicatedControlRotation;
+
+	
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 	UPROPERTY(EditAnywhere)
 	UNiagaraSystem* DashEffect;
 	
@@ -61,5 +77,10 @@ protected:
 private:
 	virtual void InitAbilityInfo() override;
 
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	bool bIsAiming = false;
+
+	
 };
+
+

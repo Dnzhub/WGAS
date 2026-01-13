@@ -12,14 +12,16 @@
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/WAbilitySystemComponent.h"
 #include "AbilitySystem/WAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/HUD/WHUD.h"
 
 
 AWPlayerCharacter::AWPlayerCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 400.f, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -58,21 +60,57 @@ int32 AWPlayerCharacter::GetPlayerLevel()
 void AWPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
+void AWPlayerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+}
+
+FRotator AWPlayerCharacter::GetBaseAimRotation() const
+{
+	if (IsLocallyControlled())
+	{
+		// For locally controlled character, use the actual control rotation
+		return Super::GetBaseAimRotation();
+	}
+	// For simulated proxies (other clients), use the replicated rotation
+	return ReplicatedControlRotation;
+
+}
+
+
+
+void AWPlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWPlayerCharacter, ReplicatedControlRotation);
+	DOREPLIFETIME(AWPlayerCharacter, bIsAiming); 
+
+
+}
 
 
 void AWPlayerCharacter::Move(const FVector2d& MovementVector)
 {
+	if (MovementVector.IsNearlyZero())
+		return;
 	
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f,Rotation.Yaw,0.f);
-
+	
 	const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(ForwardDir,MovementVector.Y);
 	AddMovementInput(RightDir,MovementVector.X);
+
+
+
 }
+
+
 
 void AWPlayerCharacter::FaceToTarget_Implementation(const FVector& TargetLocation,float InterpSpeed)
 //Target location comes from GetHitResultUnderCursorByChannel in player controller -> GetLookLocation()
@@ -157,9 +195,6 @@ void AWPlayerCharacter::PlayDashEffect()
 	
 
 }
-
-
-
 
 void AWPlayerCharacter::InitAbilityInfo()
 {
