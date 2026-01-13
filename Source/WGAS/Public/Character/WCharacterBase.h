@@ -64,6 +64,9 @@ protected:
 	FName WeaponTipSocketName;
 
 	virtual FVector GetCombatSocketLocation() override;
+
+	virtual void FaceToTarget_Implementation(const FVector& TargetLocation, float InterpSpeed) override;
+	virtual void StopFaceToTarget_Implementation() override;
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

@@ -82,6 +82,15 @@ FVector AWCharacterBase::GetCombatSocketLocation()
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
 }
 
+void AWCharacterBase::FaceToTarget_Implementation(const FVector& TargetLocation, float InterpSpeed)
+{
+	
+}
+
+void AWCharacterBase::StopFaceToTarget_Implementation()
+{
+}
+
 void AWCharacterBase::AddCharacterAbilities()
 {
 	UWAbilitySystemComponent* ASC = CastChecked<UWAbilitySystemComponent>(AbilitySystemComponent);

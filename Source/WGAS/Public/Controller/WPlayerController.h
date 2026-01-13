@@ -31,18 +31,13 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 	
-	UFUNCTION(BlueprintCallable, Category = Input)
-	bool IsAiming();
 
-	
 
 	FOnAttributeMenuPressed OnAttributeMenuPressed;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
-	UPROPERTY(BlueprintReadWrite, Category = Input)
-	bool bIsAiming;
 
 
 	
@@ -93,6 +88,7 @@ private:
 	TObjectPtr<UWAbilitySystemComponent> WAbilitySystemComponent;
 
 	UWAbilitySystemComponent* GetAbilitySystemComponent();
+
 };
 
 

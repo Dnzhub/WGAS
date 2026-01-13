@@ -17,6 +17,7 @@ AWPlayerController::AWPlayerController()
 {
 	//If any change on server stream it to all clients with replication
 	bReplicates = true;
+	
 }
 
 
@@ -27,6 +28,7 @@ void AWPlayerController::BeginPlay()
 
 	check(PlayerContext);
 
+	
 	if (IsLocalController())
 	{
 	
@@ -50,6 +52,7 @@ void AWPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	CursorTrace();
 	
+
 }
 
 void AWPlayerController::SetupInputComponent()
@@ -77,10 +80,7 @@ void AWPlayerController::OnRep_Pawn()
 	ControlledCharacter = Cast<AWPlayerCharacter>(GetPawn());
 
 }
-bool AWPlayerController::IsAiming()
-{
-	return bIsAiming;
-}
+
 
 void AWPlayerController::Move(const FInputActionValue& Value)
 {
@@ -94,7 +94,6 @@ void AWPlayerController::Move(const FInputActionValue& Value)
 
 void AWPlayerController::LookMouseCursor() 
 {
-	bIsAiming = true;
 	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Cursor);
 
 	FHitResult Hit;
@@ -103,7 +102,7 @@ void AWPlayerController::LookMouseCursor()
 	 {
 	 	if(ControlledCharacter)
 	 	{
-	 		ControlledCharacter->LookMouseCursor( Hit.Location);
+	 		ControlledCharacter->Execute_FaceToTarget(ControlledCharacter,Hit.Location,7.5f);
 	 	}
 	 }
 	
@@ -112,10 +111,9 @@ void AWPlayerController::LookMouseCursor()
 
 void AWPlayerController::StopLookMouseCursor()
 {
-	bIsAiming = false;
 	if(ControlledCharacter)
 	{
-		ControlledCharacter->StopLookMouseCursor();
+		ControlledCharacter->Execute_StopFaceToTarget(ControlledCharacter);
 	}
 }
 
@@ -137,10 +135,13 @@ void AWPlayerController::CursorTrace()
 
 void AWPlayerController::Dash()
 {
+	
+	
 	if (ControlledCharacter)
 	{
 		ControlledCharacter->Dash();
 	}
+	
 }
 
 void AWPlayerController::AttributeMenuPressed()
@@ -151,21 +152,29 @@ void AWPlayerController::AttributeMenuPressed()
 void AWPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	//if input is LMB
-	if (InputTag.MatchesTagExact(FWGameplayTags::Get().InputTag_LMB))
+	if (!GetAbilitySystemComponent()) return;
+	if (InputTag.MatchesTagExact(FWGameplayTags::Get().InputTag_RMB) )
 	{
-		
+		GetAbilitySystemComponent()->AddLooseGameplayTag(InputTag);
 	}
+
 }
 
 void AWPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (!GetAbilitySystemComponent()) return;;
+	if (!GetAbilitySystemComponent()) return;
+
 	GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+	if (InputTag.MatchesTagExact(FWGameplayTags::Get().InputTag_RMB) )
+	{
+		GetAbilitySystemComponent()->RemoveLooseGameplayTag(InputTag);
+	}
 }
 
 void AWPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (!GetAbilitySystemComponent()) return;;
+	
 	GetAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 }
 

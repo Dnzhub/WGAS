@@ -18,8 +18,10 @@ public:
 	AWPlayerCharacter();
 	
 	void Move(const FVector2d& MovementVector);
-	void LookMouseCursor(const FVector& TargetLocation);
-	void StopLookMouseCursor();
+
+	virtual void FaceToTarget_Implementation(const FVector& TargetLocation,float InterpSpeed) override;
+	virtual void StopFaceToTarget_Implementation() override;
+
 	void Dash();
 	virtual void ConsumeStamina() override;
 	
@@ -49,9 +51,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float StaminaCost{20.f};
-
+	
 	void PlayDashEffect();
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	bool IsAiming() {return bIsAiming;}
+
+
 private:
 	virtual void InitAbilityInfo() override;
 
+	bool bIsAiming = false;
 };

@@ -74,10 +74,10 @@ void AWPlayerCharacter::Move(const FVector2d& MovementVector)
 	AddMovementInput(RightDir,MovementVector.X);
 }
 
-void AWPlayerCharacter::LookMouseCursor(const FVector& TargetLocation)
+void AWPlayerCharacter::FaceToTarget_Implementation(const FVector& TargetLocation,float InterpSpeed)
 //Target location comes from GetHitResultUnderCursorByChannel in player controller -> GetLookLocation()
 {
-		
+	bIsAiming = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	FVector StartLocation = FVector(GetActorLocation().X,GetActorLocation().Y,TargetLocation.Z);
@@ -86,14 +86,15 @@ void AWPlayerCharacter::LookMouseCursor(const FVector& TargetLocation)
 
 	FRotator TargetRot = FMath::RInterpTo(GetActorRotation(),
 		UKismetMathLibrary::FindLookAtRotation(StartLocation,TargetLocation),
-		DeltaSecond,7.5);
+		DeltaSecond,InterpSpeed);
 
 	SetActorRotation(TargetRot);
 	
 }
 
-void AWPlayerCharacter::StopLookMouseCursor()
+void AWPlayerCharacter::StopFaceToTarget_Implementation()
 {
+	bIsAiming = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
@@ -156,7 +157,6 @@ void AWPlayerCharacter::PlayDashEffect()
 	
 
 }
-
 
 
 
