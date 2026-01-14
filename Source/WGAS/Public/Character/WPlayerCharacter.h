@@ -34,6 +34,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnStaminaConsumeSignature OnStaminaConsume;
 
+	
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	bool IsAiming() {return bIsAiming;}
+
 	/** Combat Interface **/
 
 	virtual int32 GetPlayerLevel() override;
@@ -69,9 +73,6 @@ protected:
 	float StaminaCost{20.f};
 	
 	void PlayDashEffect();
-
-	UFUNCTION(BlueprintCallable, Category = "Combat")
-	bool IsAiming() {return bIsAiming;}
 
 
 private:

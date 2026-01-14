@@ -23,6 +23,7 @@ AWProjectile::AWProjectile()
 	ProjectileMovementComponent->InitialSpeed = 550.f;
 	ProjectileMovementComponent->MaxSpeed = 550.f;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
+
 }
 
 void AWProjectile::BeginPlay()

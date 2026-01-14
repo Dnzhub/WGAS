@@ -4,17 +4,10 @@
 #include "AbilitySystem/Abilities/WProjectileAbility.h"
 
 #include "Actor/WProjectile.h"
+#include "Character/WPlayerCharacter.h"
 #include "Interaction/CombatInterface.h"
 
 
-void UWProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                          const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-                                          const FGameplayEventData* TriggerEventData)
-{
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-
-}
 
 void UWProjectileAbility::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
@@ -42,4 +35,26 @@ void UWProjectileAbility::SpawnProjectile(const FVector& ProjectileTargetLocatio
 		//TODO: Give the projectile a gameplay effect spec for causing damage
 		Projectile->FinishSpawning(SpawnTransform);
 	}
+}
+
+bool UWProjectileAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
+	{
+		return false;
+	}
+	if (ActorInfo && ActorInfo->AvatarActor.IsValid())
+	{
+		if (AWPlayerCharacter* Character = Cast<AWPlayerCharacter>(ActorInfo->AvatarActor.Get()))
+		{
+			if (!Character->IsAiming())
+			{
+				return false;
+			}
+		}
+	}
+	
+	return true;
 }
