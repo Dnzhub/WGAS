@@ -8,13 +8,17 @@
 #include "GameplayEffectTypes.h"
 #include "AbilitySystem/WAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "WGAS/WGAS.h"
 
 AWCharacterBase::AWCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile,ECR_Overlap);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(false);
 
 	
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
@@ -46,6 +50,7 @@ void AWCharacterBase::InitializeDefaultAttributes() const
 	//Vital attributes depends their max values and max values are in secondary attributes
 	//Call it after secondary attributes initialized
 	ApplyGameplayEffect(DefaultVitalAttributes);
+
 	
 	ApplyGameplayEffect(StaminaGenerationGEClass);
 	

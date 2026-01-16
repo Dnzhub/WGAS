@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "WProjectile.generated.h"
 
@@ -18,6 +19,8 @@ class WGAS_API AWProjectile : public AActor
 public:
 	AWProjectile();
 
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 	
 
 protected:
@@ -46,6 +49,6 @@ private:
 	TObjectPtr<UAudioComponent> LoopingSoundComponent;
 
 	UPROPERTY(EditDefaultsOnly)
-	float LifeSpan{15.f}; 
+	float LifeSpan{10.f}; 
 	bool bHit = false;
 };

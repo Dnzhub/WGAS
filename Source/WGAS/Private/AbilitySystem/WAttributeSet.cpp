@@ -94,6 +94,7 @@ void UWAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCa
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(),0.f, GetMaxHealth()));
+		UE_LOG(LogTemp,Warning, TEXT("Change Health on %s, Health: %f"),*Props.TargetAvatarActor->GetName(),GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{

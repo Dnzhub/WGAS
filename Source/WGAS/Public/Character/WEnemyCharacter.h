@@ -7,6 +7,11 @@
 #include "Interaction/Interactable.h"
 #include "WEnemyCharacter.generated.h"
 
+struct FWidgetControllerParams;
+class UEnemyWidgetController;
+class UWUserWidget;
+class UWidgetComponent;
+
 UCLASS()
 class WGAS_API AWEnemyCharacter : public AWCharacterBase, public IInteractable
 {
@@ -27,6 +32,22 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityInfo() override;
+
+	UEnemyWidgetController* GetEnemyWidgetController(const FWidgetControllerParams& WCParams);
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> WidgetComponent;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UEnemyWidgetController> EnemyWidgetControllerClass;
+
+	UPROPERTY()
+	TObjectPtr<UEnemyWidgetController> EnemyWidgetController;
+	
+	void InitHealthBarWidget(ACharacter* CH,UAbilitySystemComponent* ASC, UAttributeSet* AS);
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;

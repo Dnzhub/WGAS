@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/WProjectileAbility.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/WProjectile.h"
 #include "Character/WPlayerCharacter.h"
 #include "Interaction/CombatInterface.h"
@@ -32,7 +34,11 @@ void UWProjectileAbility::SpawnProjectile(const FVector& ProjectileTargetLocatio
 			Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		//TODO: Give the projectile a gameplay effect spec for causing damage
+		//Apply damage gameplay effect on projectile
+		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceASC->MakeEffectContext());
+		Projectile->DamageEffectSpecHandle = SpecHandle;
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

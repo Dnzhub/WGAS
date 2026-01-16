@@ -22,6 +22,8 @@ struct FWidgetControllerParams
 		: PlayerController(InPlayerController), PlayerCharacter(InPlayerCharacter),PlayerState(InPlayerState),
 		  AbilitySystemComponent(InAbilitySystemComponent), AttributeSet(InAttributeSet){}
 
+	FWidgetControllerParams(UAbilitySystemComponent* InAbilitySystemComponent, UAttributeSet* InAttributeSet, ACharacter* InPlayerCharacter)
+			: PlayerCharacter(InPlayerCharacter),AbilitySystemComponent(InAbilitySystemComponent), AttributeSet(InAttributeSet){}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<APlayerController> PlayerController = nullptr;
