@@ -36,7 +36,7 @@ protected:
 	UEnemyWidgetController* GetEnemyWidgetController(const FWidgetControllerParams& WCParams);
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	TObjectPtr<UWidgetComponent> WidgetComponent;
+	TObjectPtr<UWidgetComponent> HealthBar;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> HealthBarWidgetClass;

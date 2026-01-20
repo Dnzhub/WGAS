@@ -23,8 +23,8 @@ AWEnemyCharacter::AWEnemyCharacter()
 
 	AttributeSet = CreateDefaultSubobject<UWAttributeSet>("AttributeSet");
 
-	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
-	WidgetComponent->SetupAttachment(GetRootComponent());
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
+	HealthBar->SetupAttachment(GetRootComponent());
 
 }
 
@@ -80,13 +80,13 @@ void AWEnemyCharacter::InitHealthBarWidget(ACharacter* CH, UAbilitySystemCompone
 	checkf(HealthBarWidgetClass, TEXT("HealthBar Widget Class is NULL, fill out EnemyCharacter class"));
 	checkf(EnemyWidgetControllerClass, TEXT("Enemy Widget Controller Class is NULL, fill EnemyCharacter class"));
 
-	WidgetComponent->SetWidgetClass(HealthBarWidgetClass);
-	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	WidgetComponent->SetDrawAtDesiredSize(true);
+	HealthBar->SetWidgetClass(HealthBarWidgetClass);
+	HealthBar->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthBar->SetDrawAtDesiredSize(true);
 	
 	const FWidgetControllerParams WidgetControllerParams(ASC,AS,CH);
 	UEnemyWidgetController* WidgetController =  GetEnemyWidgetController(WidgetControllerParams); //Construct  widget controller
-	UWUserWidget* Widget = Cast<UWUserWidget>(WidgetComponent->GetWidget());
+	UWUserWidget* Widget = Cast<UWUserWidget>(HealthBar->GetWidget());
 
 	checkf(Widget, TEXT("Widget cast failed in EnemyCharacter"));
 	
