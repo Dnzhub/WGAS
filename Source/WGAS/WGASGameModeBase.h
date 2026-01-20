@@ -9,9 +9,13 @@
 /**
  * 
  */
+
+class UCharacterClassInfo;
+
 UCLASS()
 class WGAS_API AWGASGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+
 };

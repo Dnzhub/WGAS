@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/WAbilitySystemLibrary.h"
 
+#include "AbilitySystemComponent.h"
+#include "Game/WGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "State/WPlayerState.h"
 #include "UI/HUD/WHUD.h"
@@ -44,3 +46,31 @@ UAttributeMenuWidgetController* UWAbilitySystemLibrary::GetAttributeMenuWidgetCo
 	}
 	return nullptr;
 }
+
+void UWAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject,ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* AbilitySystemComponent)
+{
+	AWGameModeBase* GameMode = Cast<AWGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!GameMode) return;
+
+	AActor* AvatarActor = AbilitySystemComponent->GetAvatarActor();
+
+	UCharacterClassInfo* CharacterClassInfo = GameMode->CharacterClassInfo;
+	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+
+	FGameplayEffectContextHandle PrimaryAttributesContextHandle =  AbilitySystemComponent->MakeEffectContext();
+	PrimaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle PrimaryAttributesSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttributes, Level,PrimaryAttributesContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*PrimaryAttributesSpecHandle.Data.Get());
+
+
+	FGameplayEffectContextHandle SecondaryAttributesContextHandle =  AbilitySystemComponent->MakeEffectContext();
+	SecondaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle SecondaryAttributesSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(CharacterClassInfo->SecondaryAttributes, Level, SecondaryAttributesContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SecondaryAttributesSpecHandle.Data.Get());
+
+
+	FGameplayEffectContextHandle VitalAttributesContextHandle =  AbilitySystemComponent->MakeEffectContext();
+	VitalAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle VitalAttributesSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(CharacterClassInfo->VitalAttributes, Level, VitalAttributesContextHandle);
+	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*VitalAttributesSpecHandle.Data.Get());
+} 

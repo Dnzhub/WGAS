@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "WCharacterBase.h"
 #include "Interaction/Interactable.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "WEnemyCharacter.generated.h"
 
 struct FWidgetControllerParams;
@@ -32,6 +33,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityInfo() override;
+	virtual void InitializeDefaultAttributes() const override;
+
 
 	UEnemyWidgetController* GetEnemyWidgetController(const FWidgetControllerParams& WCParams);
 
@@ -51,5 +54,9 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
 	
 };

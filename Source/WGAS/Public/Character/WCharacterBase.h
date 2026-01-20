@@ -44,7 +44,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 	
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 	virtual void ConsumeStamina();
 
 	/*

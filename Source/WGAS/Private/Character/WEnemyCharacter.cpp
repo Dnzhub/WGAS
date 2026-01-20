@@ -4,6 +4,7 @@
 #include "Character/WEnemyCharacter.h"
 
 #include "AbilitySystem/WAbilitySystemComponent.h"
+#include "AbilitySystem/WAbilitySystemLibrary.h"
 #include "AbilitySystem/WAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
@@ -62,6 +63,12 @@ void AWEnemyCharacter::InitAbilityInfo()
 	Cast<UWAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AWEnemyCharacter::InitializeDefaultAttributes() const
+{
+	UWAbilitySystemLibrary::InitializeDefaultAttributes(this,CharacterClass, Level,AbilitySystemComponent);
+	
 }
 
 UEnemyWidgetController* AWEnemyCharacter::GetEnemyWidgetController(const FWidgetControllerParams& WCParams)
