@@ -11,6 +11,8 @@
 #include "UI/Widget/WUserWidget.h"
 #include "UI/WidgetController/EnemyWidgetController.h"
 #include "WGAS/WGAS.h"
+#include "WGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 AWEnemyCharacter::AWEnemyCharacter()
@@ -32,11 +34,25 @@ AWEnemyCharacter::AWEnemyCharacter()
 void AWEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityInfo();
-
+	UWAbilitySystemLibrary::GiveStartupAbilities(this,AbilitySystemComponent);
+	
 	InitHealthBarWidget(this,AbilitySystemComponent,AttributeSet);
 
+	
+	AbilitySystemComponent->RegisterGameplayTagEvent(FWGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+		this,
+		&AWEnemyCharacter::HitReactTagChanged
+	);
+
 }
+void AWEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+}
+
 void AWEnemyCharacter::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
@@ -55,6 +71,7 @@ int32 AWEnemyCharacter::GetPlayerLevel()
 {
 	return Level;
 }
+
 
 
 void AWEnemyCharacter::InitAbilityInfo()

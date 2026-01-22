@@ -104,6 +104,27 @@ void UWAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCa
 	{
 		SetStamina(FMath::Clamp(GetStamina(),0.f, GetMaxStamina()));
 	}
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		//Incoming damage is meta attribute after used its value, reset it - consume data
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
+
+		if (LocalIncomingDamage > 0.f)
+		{
+			const float NewHealth = GetHealth() -  LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth,0.f, GetMaxHealth()));
+
+			const bool bIsDead = GetHealth() <= 0;
+			if (!bIsDead)
+			{
+				//Activate ability with specific tag
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FWGameplayTags::Get().Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+		}
+	}
 }
 
 void UWAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data,

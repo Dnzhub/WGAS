@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
-
+class UAnimMontage;
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI,BlueprintType)
 class UCombatInterface : public UInterface
@@ -20,7 +20,6 @@ class WGAS_API ICombatInterface
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
 	virtual int32 GetPlayerLevel();
@@ -34,4 +33,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
 	void UpdateWarpFacingTarget(const FVector& TargetLocation);
+
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	UAnimMontage* GetHitReactMontage();
+
+	virtual void Die() = 0;
 };

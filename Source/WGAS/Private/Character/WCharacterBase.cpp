@@ -31,6 +31,11 @@ UAbilitySystemComponent* AWCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UAnimMontage* AWCharacterBase::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
+}
+
 void AWCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

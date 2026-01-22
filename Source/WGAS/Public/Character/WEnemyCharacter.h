@@ -8,6 +8,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "WEnemyCharacter.generated.h"
 
+struct FGameplayTag;
 struct FWidgetControllerParams;
 class UEnemyWidgetController;
 class UWUserWidget;
@@ -30,6 +31,15 @@ public:
 	/** Combat Interface **/
 	virtual int32 GetPlayerLevel() override;
 	/** End Combat Interface **/
+
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category= "Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category= "Combat")
+	float BaseWalkSpeed = 250.f;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityInfo() override;
@@ -58,5 +68,4 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
-	
 };

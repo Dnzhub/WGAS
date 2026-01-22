@@ -73,4 +73,19 @@ void UWAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldCon
 	VitalAttributesContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle VitalAttributesSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(CharacterClassInfo->VitalAttributes, Level, VitalAttributesContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*VitalAttributesSpecHandle.Data.Get());
+}
+
+void UWAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject,
+	UAbilitySystemComponent* AbilitySystemComponent)
+{
+	AWGameModeBase* GameMode = Cast<AWGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!GameMode) return;
+
+	UCharacterClassInfo* CharacterClassInfo = GameMode->CharacterClassInfo;
+	for (const TSubclassOf<UGameplayAbility>& AbilityClass : CharacterClassInfo->SharedAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
+		AbilitySystemComponent->GiveAbility(AbilitySpec);
+
+	}
 } 

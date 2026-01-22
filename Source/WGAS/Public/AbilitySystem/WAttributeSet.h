@@ -172,7 +172,15 @@ public:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Stamina, Category = "Vital Attributes")
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UWAttributeSet,Stamina)
+
+	//Meta Attributes
+
+	//Meta Attributes are not replicated, we set it on server and on the server process data and make calculations
+	UPROPERTY(BlueprintReadOnly, Category= "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UWAttributeSet,IncomingDamage)
 	
+	//end Meta Attributes
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
